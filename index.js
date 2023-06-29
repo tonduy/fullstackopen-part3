@@ -11,6 +11,11 @@ app.use(
     morgan(':method :url :status :res[content-length] - :response-time ms :postData')
 );
 
+const cors = require('cors')
+
+app.use(cors())
+app.use(express.static('build'))
+
 let phonebook = [
     {
         "id": 1,
@@ -100,7 +105,7 @@ const generateId = () => {
     return Number(id);
 }
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })
