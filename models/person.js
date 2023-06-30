@@ -15,10 +15,39 @@ mongoose.connect(url)
         console.log('error connecting to MongoDB:', error.message)
     })
 
+const customNumberValidator = [
+    {
+        validator: (number) => {
+            const parts = number.split('-')
+
+            if (parts.length !== 2){
+                return false;
+            }
+
+            if (!/^\d{2,3}-\d+$/.test(number)){
+                return false;
+            }
+
+            return true;
+        },
+        message: 'invalid phone format'
+    }
+]
+
 const personSchema = new mongoose.Schema({
-    name: String,
-    number: String,
+    name: {
+        type: String,
+        minLength: 3,
+        required: true
+    },
+    number: {
+        type: String,
+        minLength: 8,
+        validate: customNumberValidator
+    },
 })
+
+
 
 
 personSchema.set('toJSON', {
